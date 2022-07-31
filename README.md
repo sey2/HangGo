@@ -9,7 +9,8 @@
 
 ## 💭  Todo List
 - 프로토타입 설계
-   - [x] 홈
+   - [] 로그인 폼
+   - [] Bottom Navigation 
 
 <table>
   <tr>
