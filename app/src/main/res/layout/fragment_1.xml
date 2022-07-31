@@ -57,6 +57,23 @@
         tools:layout_editor_absoluteX="344dp"
         tools:layout_editor_absoluteY="68dp" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/abhayalibre_semibold"
+        android:shadowColor="#252525"
+        android:shadowDx="7.0"
+        android:shadowDy="5.0"
+        android:shadowRadius="7.0"
+        android:text="가보고 싶은 여행지가 있으신가요?"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/searchCardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/profileCardView"
         android:layout_width="50dp"
