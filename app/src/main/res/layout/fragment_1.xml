@@ -206,7 +206,7 @@
                 android:textSize="20sp" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/hotArrow"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="227dp"
@@ -225,6 +225,47 @@
             app:layout_constraintTop_toBottomOf="@id/hotTitleLayout"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"/>
+
+        <LinearLayout
+            android:id="@+id/withTitleLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hotRecycler">
+
+            <TextView
+                android:id="@+id/withSpotText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/abhayalibre_semibold"
+                android:text="함께하기 좋은 여행지"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/withArrow"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="180dp"
+                android:layout_marginLeft="227dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0"
+                app:srcCompat="@drawable/arrow_icon"/>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/withRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/withTitleLayout"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

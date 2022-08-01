@@ -4,6 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/HangGo.iml" filepath="$PROJECT_DIR$/.idea/modules/HangGo.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/HangGo.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/HangGo.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/HangGo.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/HangGo.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/HangGo.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/HangGo.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/HangGo.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/HangGo.app.unitTest.iml" />
     </modules>
   </component>
 </project>

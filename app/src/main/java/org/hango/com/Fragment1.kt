@@ -30,6 +30,11 @@ class Fragment1 : Fragment() {
         _binding.hotRecycler.adapter = hotSpotAdapter
         _binding.hotRecycler.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
 
+        var withSpotAdapter = TravelAdapter()
+        withSpotAdapter.listData = loadData()
+        _binding.withRecycler.adapter = withSpotAdapter
+        _binding.withRecycler.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+
         return _binding.root
     }
 
