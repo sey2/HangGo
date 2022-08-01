@@ -227,7 +227,7 @@
             android:layout_marginTop="10dp"/>
 
         <LinearLayout
-            android:id="@+id/withTitleLayout"
+            android:id="@+id/famousTitleLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="20dp"
@@ -236,7 +236,7 @@
             app:layout_constraintTop_toBottomOf="@id/hotRecycler">
 
             <TextView
-                android:id="@+id/withSpotText"
+                android:id="@+id/famousSpotText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
@@ -248,7 +248,7 @@
                 android:textSize="20sp" />
 
             <ImageView
-                android:id="@+id/withArrow"
+                android:id="@+id/famousArrow"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="180dp"
@@ -259,11 +259,11 @@
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/withRecycler"
+            android:id="@+id/famousRecycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/withTitleLayout"
+            app:layout_constraintTop_toBottomOf="@id/famousTitleLayout"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp" />
 
