@@ -9,7 +9,11 @@
 
 ## 💭  Todo List
 - 프로토타입 설계
-  - [ ] 로그인 폼
+  - [x] 로그인 폼 (PHP)
+  - [ ] KaKao Login
+  - [ ] Google Login
+  - [ ] Login Form UI
+  - [ ] Register Form UI 
   - [x] Bottom Navigation
   - [x] HomeFragment
 
