@@ -1,11 +1,7 @@
 package org.hango.com
 
-import TravelAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.content.res.ResourcesCompat
-import androidx.fragment.app.ListFragment
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import org.hango.com.databinding.ActivityMainBinding
