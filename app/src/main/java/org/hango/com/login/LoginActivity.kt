@@ -2,11 +2,14 @@ package org.hango.com.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Response
 import com.android.volley.toolbox.Volley
+import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.user.UserApiClient
 import org.hango.com.MainActivity
 import org.hango.com.databinding.ActivityLoginBinding
 import org.json.JSONException
@@ -19,6 +22,38 @@ class LoginActivity : AppCompatActivity() {
         val binding = ActivityLoginBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
+            if (error != null) {
+                Toast.makeText(this, "토큰 정보 보기 실패", Toast.LENGTH_SHORT).show()
+            }
+            else if (tokenInfo != null) {
+                Toast.makeText(this, "토큰 정보 보기 성공", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                finish()
+            }
+        }
+        val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+            if (error != null) {
+                Log.e("KakaoLogin", "카카오계정으로 로그인 실패", error)
+            }
+            else if (token != null) {
+                Toast.makeText(this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                finish()
+            }
+        }
+         // 카카오 로그인 버튼
+        binding.kakaoLoginButton.setOnClickListener {
+            if(UserApiClient.instance.isKakaoTalkLoginAvailable(this)){
+                UserApiClient.instance.loginWithKakaoTalk(this, callback = callback)
+            }else{
+                UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
+            }
+        }
+
 
         binding.btnRegister.setOnClickListener(
             View.OnClickListener
