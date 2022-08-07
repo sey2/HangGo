@@ -70,7 +70,7 @@
                 android:layout_marginLeft="8dp"
                 android:backgroundTint="@color/logoSky"
                 android:ems="14"
-                android:inputType="textPersonName"
+                android:inputType="textPersonName|textPassword"
                 android:outlineProvider="none"
                 android:singleLine="false"
                 tools:ignore="SpeakableTextPresentCheck" />
