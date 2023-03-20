@@ -1,75 +1,73 @@
-import android.R
-import android.app.Activity
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.VolleyError
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
-import org.hango.com.Travel
-import org.json.JSONException
-import org.json.JSONObject
-import java.security.AccessController.getContext
+import com.bumptech.glide.Glide
+import org.hango.com.Data.Travel
+import org.hango.com.Data.TravelViewModel
+import org.hango.com.MainActivity
+import org.hango.com.R
+import org.hango.com.databinding.FragmentHomeBinding
+import java.time.LocalDate
 
 
 class HomeFragment : Fragment() {
-    protected var todayRecycler: RecyclerView? = null
-    protected var hotelRecycler: RecyclerView? = null
-    protected var famousRecycler: RecyclerView? = null
-    protected var todayAdapter: TravelAdapter? = null
-    protected var hotelAdapter: TravelAdapter? = null
-    protected var famousAdapter: TravelAdapter? = null
-    private var model: TravelViewModel? = null
-    private var searchText: EditText? = null
-    private var searchButton: ImageView? = null
-    private var profile: ImageView? = null
-    private var userNameTextView: TextView? = null
+    private lateinit var todayAdapter: TravelAdapter
+    private lateinit var hotelAdapter: TravelAdapter
+    private lateinit var famousAdapter: TravelAdapter
+    private lateinit var model: TravelViewModel
+    private lateinit var mContext: Context
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    fun onCreateView(
+    override fun onCreateView(
         inflater: LayoutInflater,
-        container: ViewGroup,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        val rootView = inflater.inflate(R.layout.fragment_home, container, false) as ViewGroup
-        model = ViewModelProvider(this.getActivity()).get(TravelViewModel::class.java)
+    ): View? {
+        val binding = FragmentHomeBinding.inflate(layoutInflater)
+
+        model = ViewModelProvider(this).get(TravelViewModel::class.java)
         todayAdapter = TravelAdapter()
-        todayRecycler = rootView.findViewById(R.id.todayRecycler)
-        setAdapter(todayAdapter!!, todayRecycler)
+        setAdapter(todayAdapter, binding.todayRecycler)
         loadData(container, todayAdapter, "areaBasedList", "", "1")
+
         hotelAdapter = TravelAdapter()
-        hotelRecycler = rootView.findViewById(R.id.hotRecycler)
-        setAdapter(hotelAdapter!!, hotelRecycler)
+        setAdapter(hotelAdapter!!, binding.hotRecycler)
         loadData(container, hotelAdapter, "searchStay", "", "1")
+
         val current_date: LocalDate = LocalDate.now()
-        val date: Array<String> = current_date.toString().split("-")
+        val date: Array<String> = current_date.toString().split("-").toTypedArray()
+
         famousAdapter = TravelAdapter()
-        famousRecycler = rootView.findViewById(R.id.famousRecycler)
-        setAdapter(famousAdapter!!, famousRecycler)
+        setAdapter(famousAdapter!!, binding.famousRecycler)
         loadData(container, famousAdapter, "searchFestival", date[0] + date[1] + date[2], "1")
-        searchText = rootView.findViewById(R.id.searchEditText)
-        searchButton = rootView.findViewById(R.id.serachButton)
-        profile = rootView.findViewById(R.id.home_profile)
-        userNameTextView = rootView.findViewById(R.id.userName)
+
         attachListener(container, date)
         Log.d("Activity2", "HomeFragment")
-        if (model.getUserinfo().getValue() != null) {
-            model.getUserinfo().observe(this.getActivity(), object : Observer<UserInfoData?>() {
-                fun onChanged(userInfoData: UserInfoData) {
-                    Log.d("callUrl", "change: " + userInfoData.getProfileUri())
-                    Glide.with(getContext()).load(userInfoData.getProfileUri()).into(profile)
-                }
-            })
+
+        model?.let{model.userinfo?.observe(viewLifecycleOwner) { userInfoData ->
+            Log.d("callUrl", "change: " + userInfoData.profileUri!!)
+            Glide.with(this).load(userInfoData.profileUri!!)).into(profile)
+            }
         }
+
+
         return rootView
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is MainActivity) {
+            mContext = context
+        }
     }
 
     // 앱 첫 실행순서 HomeFragment -> MainActivity -> HomeFragment (onResume)
@@ -79,7 +77,7 @@ class HomeFragment : Fragment() {
         userNameTextView.setText(model.getUserinfo().getValue().getUserName())
     }
 
-    private fun attachListener(container: ViewGroup, date: Array<String>) {
+    private fun attachListener(container: ViewGroup?, date: Array<String>) {
         // 검색어 입력 후 자판 내리기
         searchText!!.setOnKeyListener(object : OnKeyListener() {
             fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {
@@ -135,7 +133,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadData(
-        view: ViewGroup,
+        view: ViewGroup?,
         adapter: TravelAdapter?,
         search: String,
         eventDate: String,

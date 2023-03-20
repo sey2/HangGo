@@ -8,7 +8,7 @@
         android:id="@+id/homeFragment"
         android:name="org.hango.com.Fragment1"
         android:label="HomeFragment"
-        tools:layout="@layout/fragment_1" >
+        tools:layout="@layout/fragment_home" >
     </fragment>
 
     <fragment
@@ -21,12 +21,12 @@
         android:id="@+id/userFragment"
         android:name="org.hango.com.Fragment1"
         android:label="UserFragment"
-        tools:layout="@layout/fragment_1" />
+        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/settingFragment"
         android:name="org.hango.com.Fragment1"
         android:label="SettingFragment"
-        tools:layout="@layout/fragment_1" />
+        tools:layout="@layout/fragment_home" />
 
 </navigation>
