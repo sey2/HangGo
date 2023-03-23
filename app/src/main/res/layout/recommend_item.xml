@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="130dp"
     android:layout_height="145dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -20,8 +21,15 @@
         <RelativeLayout
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/back_1">
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/backgroundImg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:tintMode="src_atop"
+                app:tint="#70424141" />
 
             <TextView
                 android:id="@+id/cityTextView"
@@ -32,7 +40,8 @@
                 android:layout_marginBottom="20dp"
                 android:fontFamily="@font/abhayalibre_semibold"
                 android:text="제주도"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="10sp" />
 
             <TextView
                 android:id="@+id/spotTextView"
@@ -44,7 +53,7 @@
                 android:fontFamily="@font/abhayalibre_semibold"
                 android:text="세화해변"
                 android:textColor="@color/white"
-                android:textSize="10sp" />
+                android:textSize="7sp" />
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
