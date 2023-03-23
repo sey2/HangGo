@@ -23,6 +23,8 @@ import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.storage.FirebaseStorage
@@ -48,10 +50,13 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
 
-        model = ViewModelProvider(this).get(TravelViewModel::class.java)
+        model = ViewModelProvider(requireActivity()).get(TravelViewModel::class.java)
+
+        Log.d("Life", "Home onCreateView: ${model.userinfo!!.value!!.userID}")
+
         todayAdapter = TravelAdapter()
         setAdapter(todayAdapter, binding!!.todayRecycler)
         loadData(container, todayAdapter, "areaBasedList", "", "1")
@@ -68,12 +73,19 @@ class HomeFragment : Fragment() {
         loadData(container, famousAdapter, "searchFestival", date[0] + date[1] + date[2], "1")
 
         attachListener(container, date)
-        Log.d("Activity2", "HomeFragment")
 
-        model?.let{model.userinfo?.observe(viewLifecycleOwner) { userInfoData ->
-                Log.d("callUrl", "change: " + userInfoData.profileUri!!)
-                Glide.with(this).load(userInfoData.profileUri!!).into(binding!!.profile)
-            }
+        model.userinfo?.value?.userID?.let{
+            setProfileFromCloud()
+        }
+
+        binding!!.userName.setText(model.userinfo!!.value?.userName ?: "NULL")
+
+        model.userinfo!!.observe(requireActivity()) { UserInfoData ->
+            Log.d("callUrl", "change: $UserInfoData")
+
+            Glide.with(this).load(UserInfoData.profileUri).
+            apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).
+            into(binding!!.profile)
         }
 
         return binding!!.root
@@ -81,18 +93,10 @@ class HomeFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
         if (context is MainActivity) {
             mContext = context
         }
-    }
-
-    // 앱 첫 실행순서 HomeFragment -> MainActivity -> HomeFragment (onResume)
-    override fun onResume() {
-        super.onResume()
-
-        if (model.userinfo?.value?.profileUri == null) setProfileFromCloud()
-        else
-            binding!!.userName.setText(model.userinfo!!.value?.userName ?: "NULL")
     }
 
     override fun onDestroyView() {
@@ -133,6 +137,7 @@ class HomeFragment : Fragment() {
         binding!!.searchEditText.hint = "검색어를 입력해주세요"
         deleteAdapter()
         model.deleteList()
+
         loadData(container, todayAdapter, "areaBasedList", "", local)
         loadData(container, hotelAdapter, "searchStay", "", local)
         loadData(container, famousAdapter, "searchFestival", date[0] + date[1] + date[2], local)
@@ -185,20 +190,16 @@ class HomeFragment : Fragment() {
             null,
             { jsonObject ->
                 try {
-                    Log.d("Json", jsonObject.toString())
+                    // Log.d("Json", jsonObject.toString())
                     val response = jsonObject.get("response") as JSONObject
 
                     val body = response["body"] as JSONObject
-                    Log.d("Json", "execute2")
                     val items = body["items"] as JSONObject
-                    Log.d("Json", "execute3")
                     val itemArray = items.getJSONArray("item")
-                    Log.d("Json", "execute4")
 
                     var arItem: ArrayList<Travel> = ArrayList()
 
                     for (i in 0 until itemArray.length()) {
-                        Log.d("Josn", "foorLoop in")
                         val item = itemArray.getJSONObject(i)
                         var travel: Travel = Travel()
 
@@ -275,14 +276,20 @@ class HomeFragment : Fragment() {
         val storageRef: StorageReference = storage.getReference()
 
         val imgRef: StorageReference = storageRef.child(
-            "profile/" +  model.userinfo?.value?.userID.toString() + "profile.png"
+            "profile/${model.userinfo?.value?.userID}profile.png"
         )
+
 
         if (imgRef != null) {
             imgRef.getDownloadUrl().addOnSuccessListener(object : OnSuccessListener<Uri?> {
                 override fun onSuccess(uri: Uri?) {
                     Log.d("callUrl", "sucess$uri")
-                    Glide.with(mContext).load(uri).error(R.drawable.user_ic).into(binding!!.profile)
+
+                    model.userinfo?.value?.profileUri = uri
+
+                    Glide.with(mContext).load(uri).
+                    apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).
+                    into(binding!!.profile)
                 }
             }).addOnFailureListener(object : OnFailureListener {
                 override fun onFailure(e: Exception) {

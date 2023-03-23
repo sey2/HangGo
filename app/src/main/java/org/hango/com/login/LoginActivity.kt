@@ -24,10 +24,11 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
-            if (error != null) {
+            error?.let {
                 Toast.makeText(this, "토큰 정보 보기 실패", Toast.LENGTH_SHORT).show()
             }
-            else if (tokenInfo != null) {
+
+            tokenInfo?.let{
                 Toast.makeText(this, "토큰 정보 보기 성공", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
@@ -35,10 +36,11 @@ class LoginActivity : AppCompatActivity() {
             }
         }
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-            if (error != null) {
+            error?.let{
                 Log.e("KakaoLogin", "카카오계정으로 로그인 실패", error)
             }
-            else if (token != null) {
+
+            token?.let{
                 Toast.makeText(this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
@@ -47,11 +49,11 @@ class LoginActivity : AppCompatActivity() {
         }
          // 카카오 로그인 버튼
         binding.kakaoLoginButton.setOnClickListener {
-            if(UserApiClient.instance.isKakaoTalkLoginAvailable(this)){
+
+            if(UserApiClient.instance.isKakaoTalkLoginAvailable(this))
                 UserApiClient.instance.loginWithKakaoTalk(this, callback = callback)
-            }else{
+            else
                 UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
-            }
         }
 
 
@@ -66,18 +68,30 @@ class LoginActivity : AppCompatActivity() {
         binding.btnLogin.setOnClickListener(View.OnClickListener {
             val userID = binding.etId.getText().toString()
             val userPass = binding.etPass.getText().toString()
+
             val responseListener =
                 Response.Listener<String?> { response ->
                     try {
                         val jasonObject = JSONObject(response)
                         val success = jasonObject.getBoolean("success")
+
                         if (success) { //회원등록 성공한 경우
                             val userID = jasonObject.getString("userID")
-                            val userPass = jasonObject.getString("userPassword")
+                            val userName = jasonObject.getString("userName")
+                            val userProfile = jasonObject.getString("userProfile")
+                            val userMbti = jasonObject.getString("userMbti")
+
                             Toast.makeText(applicationContext, "로그인 성공", Toast.LENGTH_SHORT).show()
+
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
+
                             intent.putExtra("log", "User")
                             intent.putExtra("userID", userID)
+                            intent.putExtra("userName", userName)
+                            intent.putExtra("userProfile", userProfile)
+                            intent.putExtra("userMbti", userMbti)
+
+
                             startActivity(intent)
                         } else { //회원등록 실패한 경우
                             Toast.makeText(applicationContext, "로그인 실패", Toast.LENGTH_SHORT).show()
@@ -92,8 +106,10 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "회원가입 처리시 에러발생!", Toast.LENGTH_SHORT).show()
                 return@ErrorListener
             }
+
             val loginRequest = LoginRequest(userID, userPass, responseListener)
             val queue = Volley.newRequestQueue(this@LoginActivity)
+
             queue.add(loginRequest)
         })
     }

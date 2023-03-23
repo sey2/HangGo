@@ -80,6 +80,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="15dp"
             android:layout_marginRight="20dp"
+            android:adjustViewBounds="true"
             android:background="@drawable/profile"
             app:cardCornerRadius="75dp"
             app:cardElevation="20dp"
@@ -91,7 +92,6 @@
                 android:id="@+id/profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/profile"
                 android:src="@android:drawable/divider_horizontal_dim_dark" />
         </androidx.cardview.widget.CardView>
 

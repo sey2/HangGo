@@ -9,6 +9,7 @@ class TravelViewModel : ViewModel() {
     private var travelItems: MutableLiveData<ArrayList<Travel>>? = null
     private var userInfoItem: MutableLiveData<UserInfoData>? = null
 
+
     var list: ArrayList<Travel> = ArrayList()
         private set
     val travelLiveItems: LiveData<ArrayList<Travel>>
@@ -20,7 +21,7 @@ class TravelViewModel : ViewModel() {
     fun add(item: Travel) {
         list.add(item)
         if (travelItems == null) travelLiveItems
-        travelItems!!.setValue(list)
+        travelItems!!.value = list
     }
 
     fun deleteList() {
@@ -34,7 +35,9 @@ class TravelViewModel : ViewModel() {
         }
 
     fun setLiveItems(item: UserInfoData) {
-        if (userInfoItem == null) userinfo
-        userInfoItem!!.setValue(item)
+        if (userInfoItem == null)
+            userinfo
+
+        userInfoItem!!.value = item
     }
 }
