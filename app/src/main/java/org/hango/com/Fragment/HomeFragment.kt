@@ -1,4 +1,4 @@
-package org.hango.com;
+package org.hango.com.Fragment;
 
 import TravelAdapter
 import android.content.Context
@@ -29,8 +29,10 @@ import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import org.hango.com.BuildConfig
 import org.hango.com.Data.Travel
 import org.hango.com.Data.TravelViewModel
+import org.hango.com.MainActivity
 import org.hango.com.databinding.FragmentHomeBinding
 import org.json.JSONException
 import org.json.JSONObject
@@ -128,11 +130,13 @@ class HomeFragment : Fragment() {
 
     private fun searchData(container: ViewGroup, date: Array<String>) {
         val local = convertLocalNum(binding!!.searchEditText.text.toString())
+
         if (local == "-1") {
             binding!!.searchEditText.setText("")
             binding!!.searchEditText.hint = "올바르지 않은 검색어 입니다."
             return
         }
+
         binding!!.searchEditText.setText("")
         binding!!.searchEditText.hint = "검색어를 입력해주세요"
         deleteAdapter()
@@ -145,6 +149,7 @@ class HomeFragment : Fragment() {
 
     private fun setAdapter(adapter: TravelAdapter, recyclerView: RecyclerView?) {
         recyclerView!!.adapter = adapter
+
         recyclerView!!.layoutManager = LinearLayoutManager(
             context,
             LinearLayoutManager.HORIZONTAL, false
@@ -263,11 +268,13 @@ class HomeFragment : Fragment() {
         if (local == "제주" || local == "제주도") return "39"
         val arr1 = arrayOf("서울", "인천", "대전", "대구", "광주", "부산", "울산", "세종")
         val arr2 = arrayOf("서울특별시", "인천광역시", "대전광역시", "대구광역시", "광주광역시", "부산광역시", "울산광역시", "세종특별자치시")
+
         for (i in arr1.indices) {
             if (local == arr1[i] || local == arr2[i]) {
                 return (i + 1).toString()
             }
         }
+
         return "-1"
     }
 

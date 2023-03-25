@@ -24,7 +24,6 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val binding = ActivityRegisterBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
 
         binding.validateButton.setOnClickListener(
             View.OnClickListener
@@ -36,10 +35,13 @@ class RegisterActivity : AppCompatActivity() {
                 }
                 if (userID == "") {
                     val builder = AlertDialog.Builder(this@RegisterActivity)
+
                     dialog = builder.setMessage("아이디는 빈 칸일 수 없습니다")
                         .setPositiveButton("확인", null)
                         .create()
+
                     dialog!!.show()
+
                     return@OnClickListener
                 }
                 val responseListener =
@@ -47,30 +49,41 @@ class RegisterActivity : AppCompatActivity() {
                         try {
                             val jsonResponse = JSONObject(response)
                             val success = jsonResponse.getBoolean("success")
+
                             if (success) {
                                 val builder = AlertDialog.Builder(this@RegisterActivity)
+
                                 dialog = builder.setMessage("사용할 수 있는 아이디입니다.")
                                     .setPositiveButton("확인", null)
                                     .create()
+
                                 dialog!!.show()
+
                                 binding.etId.setEnabled(false)
+
                                 validate = true
                                 binding.validateButton.setText("확인")
                             } else {
                                 val builder = AlertDialog.Builder(this@RegisterActivity)
+
                                 dialog = builder.setMessage("사용할 수 없는 아이디입니다.")
                                     .setNegativeButton("확인", null)
                                     .create()
+
                                 dialog!!.show()
                             }
                         } catch (e: JSONException) {
                             e.printStackTrace()
                         }
                     }
+
                 val error = Response.ErrorListener { error ->
                     Log.d("ERROR", "서버 Response 가져오기 실패: $error")}
+
                 val validateRequest = ValidateRequest(userID, responseListener,error)
+
                 val queue = Volley.newRequestQueue(this@RegisterActivity)
+
                 queue.add(validateRequest)
             })
 
@@ -131,13 +144,17 @@ class RegisterActivity : AppCompatActivity() {
                 queue.add(registerRequest)
             }
         })
+
+        setContentView(binding.root)
     }
 
     private fun checkPass(binding : ActivityRegisterBinding) : Boolean{
         val pass = binding.etPass.getText()
         val passCk = binding.etPassck.getText()
 
-        if(pass.length >=8 && passCk.length >= 8 && pass.equals(passCk)) return true
+
+        if(pass.length >=8 && passCk.length >= 8 && pass.equals(passCk))
+            return true
         else if(pass.length < 8)
             Toast.makeText(applicationContext, "비밀번호는 8자 이상이여야 합니다.", Toast.LENGTH_LONG).show()
         else if(passCk.length < 8)

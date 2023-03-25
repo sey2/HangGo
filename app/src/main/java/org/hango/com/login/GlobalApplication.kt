@@ -1,4 +1,4 @@
-package org.hango.com
+package org.hango.com.login
 import android.app.Application
 import com.kakao.sdk.common.KakaoSdk
 

@@ -12,6 +12,7 @@ class TravelViewModel : ViewModel() {
 
     var list: ArrayList<Travel> = ArrayList()
         private set
+
     val travelLiveItems: LiveData<ArrayList<Travel>>
         get() {
             if (travelItems == null) travelItems = MutableLiveData()
