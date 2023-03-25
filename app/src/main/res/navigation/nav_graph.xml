@@ -18,15 +18,15 @@
         tools:layout="@layout/fragment_map" />
 
     <fragment
-        android:id="@+id/userFragment"
+        android:id="@+id/ChatFragment"
         android:name="org.hango.com.Fragment.HomeFragment"
         android:label="UserFragment"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/settingFragment"
-        android:name="org.hango.com.Fragment.HomeFragment"
+        android:id="@+id/userFragment"
+        android:name="org.hango.com.Fragment.UserInfoFragment"
         android:label="SettingFragment"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_user_info" />
 
 </navigation>
